@@ -26,3 +26,8 @@ class CriticResult(BaseModel):
 
 class CriticResponse(BaseModel):
     critic: CriticResult
+
+class ExplainerResponse(BaseModel):
+    summary: str
+    recommendation: str
+    confidence: int
