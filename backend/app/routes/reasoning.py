@@ -33,6 +33,14 @@ def generate_plan(request: ReasoningRequest):
     }
 
 
+from fastapi import HTTPException
 @router.post("/analyze")
 def analyze(request: ReasoningRequest):
-    return run_reasoning_pipeline(request.problem)
+    try:
+        return run_reasoning_pipeline(request.problem)
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )

@@ -1,17 +1,13 @@
 import json
 import os
 import re
-
 from dotenv import load_dotenv
 from google import genai
-
+from google.genai.errors import ClientError, ServerError
 load_dotenv()
-
 client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
 )
-
-
 def _extract_json(text: str) -> str:
     """
     Extract JSON from Gemini responses.
@@ -29,17 +25,36 @@ def _extract_json(text: str) -> str:
 
 
 def generate_json(prompt: str):
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt,
-    )
-
-    cleaned = _extract_json(response.text)
-
     try:
-        return json.loads(cleaned)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
+
+        text = response.text.strip()
+
+        # Remove Markdown code fences if present
+        if text.startswith("```json"):
+            text = text.replace("```json", "").replace("```", "").strip()
+
+        return json.loads(text)
+
+    except ClientError as e:
+        raise Exception(
+            "Gemini API quota exceeded. Please wait a minute and try again."
+        ) from e
+
+    except ServerError as e:
+        raise Exception(
+            "Gemini servers are currently busy. Please try again shortly."
+        ) from e
 
     except json.JSONDecodeError as e:
-        raise ValueError(
-            f"Gemini returned invalid JSON:\n\n{response.text}"
+        raise Exception(
+            "Gemini returned an invalid JSON response."
+        ) from e
+
+    except Exception as e:
+        raise Exception(
+            f"Unexpected LLM error: {str(e)}"
         ) from e
