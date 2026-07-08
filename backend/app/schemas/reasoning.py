@@ -16,3 +16,13 @@ class AnalysisItem(BaseModel):
 
 class ReasonerResponse(BaseModel):
     analysis: list[AnalysisItem]
+
+class CriticResult(BaseModel):
+    assumptions: list[str]
+    missing_information: list[str]
+    risks: list[str]
+    follow_up_questions: list[str]
+
+
+class CriticResponse(BaseModel):
+    critic: CriticResult
