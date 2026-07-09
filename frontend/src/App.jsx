@@ -1,59 +1,90 @@
 import { useState } from "react";
-import { analyzeProblem } from "./api/reasoning";
 
+import Navbar from "./components/Navbar";
+import InputForm from "./components/InputForm";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { analyzeProblem } from "./api/reasoningApi";
+import PlannerCard from "./components/PlannerCard";
+import AnalysisCard from "./components/AnalysisCard";
+import CritiqueCard from "./components/CritiqueCard";
+import RecommendationCard from "./components/RecommendationCard";
+import ConfidenceMeter from "./components/ConfidenceMeter";
 function App() {
-  const [problem, setProblem] = useState("");
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState(null);
 
-  const handleAnalyze = async () => {
-    if (!problem.trim()) return;
+    const handleAnalyze = async (problem) => {
 
     setLoading(true);
 
     try {
-      const data = await analyzeProblem(problem);
-      setResult(data);
+
+        const data = await analyzeProblem(problem);
+
+        console.log(data);
+
+        setResult(data);
+
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong.");
+
+        console.error(error);
+
+        alert(
+            error.response?.data?.detail ||
+            "Something went wrong."
+        );
+
+    } finally {
+
+        setLoading(false);
+
     }
 
-    setLoading(false);
-  };
+};
 
-  return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="mx-auto max-w-5xl rounded-lg bg-white p-8 shadow">
+    return (
+        <div className="container">
 
-        <h1 className="mb-6 text-4xl font-bold">
-          Smart Reasoning System
-        </h1>
+            <Navbar />
 
-        <textarea
-          className="w-full rounded border p-4"
-          rows={5}
-          placeholder="Enter a complex problem..."
-          value={problem}
-          onChange={(e) => setProblem(e.target.value)}
-        />
+            <InputForm
+                onAnalyze={handleAnalyze}
+                loading={loading}
+            />
 
-        <button
-          onClick={handleAnalyze}
-          className="mt-4 rounded bg-blue-600 px-6 py-3 text-white"
-        >
-          {loading ? "Analyzing..." : "Analyze"}
-        </button>
+            {loading && <LoadingSpinner />}
 
-        {result && (
-          <pre className="mt-8 overflow-auto rounded bg-gray-900 p-6 text-green-300">
-            {JSON.stringify(result, null, 2)}
-          </pre>
-        )}
+            {result && (
+    <PlannerCard
+        steps={result.steps}
+    />
+)}
 
-      </div>
-    </div>
-  );
+{result && (
+    <AnalysisCard
+        analysis={result.analysis}
+    />
+)}
+
+{result && (
+    <CritiqueCard
+        critic={result.critic}
+    />
+)}
+
+{result && (
+    <RecommendationCard
+        recommendation={result.final_answer}
+    />
+)}
+
+{result && (
+    <ConfidenceMeter
+        confidence={result.final_answer.confidence}
+    />
+)}
+        </div>
+    );
 }
 
 export default App;
