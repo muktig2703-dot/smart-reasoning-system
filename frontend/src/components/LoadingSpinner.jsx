@@ -1,12 +1,16 @@
 function LoadingSpinner() {
     return (
-        <div className="loading">
-            <h3>🧠 AI is thinking...</h3>
+        <div className="loading-card">
+            <div className="spinner"></div>
 
-            <p>Planning...</p>
-            <p>Analyzing...</p>
-            <p>Critiquing...</p>
-            <p>Generating recommendation...</p>
+            <h2>Analyzing your problem...</h2>
+
+            <ul className="loading-steps">
+                <li>🧠 Planning reasoning steps...</li>
+                <li>🔍 Evaluating the problem...</li>
+                <li>⚠ Critiquing the solution...</li>
+                <li>✅ Preparing the recommendation...</li>
+            </ul>
         </div>
     );
 }

@@ -14,13 +14,16 @@ function InputForm({ onAnalyze, loading }) {
     return (
         <form className="input-form" onSubmit={handleSubmit}>
             <textarea
-                rows="5"
-                placeholder="Ask a reasoning question..."
+                rows="6"
+                placeholder="Example: Should I buy a laptop for college?"
                 value={problem}
                 onChange={(e) => setProblem(e.target.value)}
             />
 
-            <button type="submit" disabled={loading}>
+            <button
+                type="submit"
+                disabled={loading}
+            >
                 {loading ? "Analyzing..." : "Analyze"}
             </button>
         </form>

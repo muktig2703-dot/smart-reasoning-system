@@ -1,18 +1,17 @@
 function ConfidenceMeter({ confidence }) {
-
     return (
-        <div className="confidence-section">
+        <section className="confidence-section">
+            <h2>🎯 Confidence</h2>
 
-            <h3>Confidence</h3>
-
-            <progress
-                value={confidence}
-                max="100"
-            />
+            <div className="confidence-bar">
+                <div
+                    className="confidence-fill"
+                    style={{ width: `${confidence}%` }}
+                />
+            </div>
 
             <p>{confidence}%</p>
-
-        </div>
+        </section>
     );
 }
 

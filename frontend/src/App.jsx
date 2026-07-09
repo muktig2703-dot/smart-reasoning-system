@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-import Navbar from "./components/Navbar";
+import "./App.css";
 import InputForm from "./components/InputForm";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { analyzeProblem } from "./api/reasoningApi";
@@ -9,6 +8,8 @@ import AnalysisCard from "./components/AnalysisCard";
 import CritiqueCard from "./components/CritiqueCard";
 import RecommendationCard from "./components/RecommendationCard";
 import ConfidenceMeter from "./components/ConfidenceMeter";
+import Container from "./components/layout/Container";
+import Header from "./components/layout/Header";
 function App() {
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
@@ -43,48 +44,59 @@ function App() {
 };
 
     return (
-        <div className="container">
+    <Container>
 
-            <Navbar />
+        <Header />
 
-            <InputForm
-                onAnalyze={handleAnalyze}
-                loading={loading}
-            />
+        <InputForm
+            onAnalyze={handleAnalyze}
+            loading={loading}
+        />
 
-            {loading && <LoadingSpinner />}
+        {loading && <LoadingSpinner />}
+        {!loading && !result && (
+    <div className="empty-state">
+        <h2>🧠 Smart Reasoning System</h2>
 
-            {result && (
-    <PlannerCard
-        steps={result.steps}
-    />
-)}
+        <p>
+            Ask any reasoning question and let the AI analyze it
+            through planning, reasoning, critique, and explanation.
+        </p>
 
-{result && (
-    <AnalysisCard
-        analysis={result.analysis}
-    />
-)}
-
-{result && (
-    <CritiqueCard
-        critic={result.critic}
-    />
-)}
-
-{result && (
-    <RecommendationCard
-        recommendation={result.final_answer}
-    />
-)}
-
-{result && (
-    <ConfidenceMeter
-        confidence={result.final_answer.confidence}
-    />
-)}
+        <div className="example-box">
+            💡 Example:
+            <br />
+            Should I buy a laptop for college?
         </div>
-    );
+    </div>
+)}
+
+        {result && (
+            <>
+                <PlannerCard
+                    steps={result.steps}
+                />
+
+                <AnalysisCard
+                    analysis={result.analysis}
+                />
+
+                <CritiqueCard
+                    critic={result.critic}
+                />
+
+                <RecommendationCard
+                    recommendation={result.final_answer}
+                />
+
+                <ConfidenceMeter
+                    confidence={result.final_answer.confidence}
+                />
+            </>
+        )}
+
+    </Container>
+);
 }
 
 export default App;
