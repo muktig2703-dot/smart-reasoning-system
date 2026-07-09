@@ -1,6 +1,16 @@
 @import "tailwindcss";
+
+:root{
+    color-scheme: dark;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     margin:0;
-    background:#f5f7fb;
-    font-family:Arial, Helvetica, sans-serif;
+    background:#0B0F14;
+    color:white;
+    font-family:"Inter",sans-serif;
 }
