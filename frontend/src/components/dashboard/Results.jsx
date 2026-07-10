@@ -1,27 +1,93 @@
 import SectionCard from "./SectionCard";
+import { motion } from "framer-motion";
+import {
+    Brain,
+    Search,
+    TriangleAlert,
+    BadgeCheck
+} from "lucide-react";
+const containerVariants = {
+    hidden: {},
+    visible: {
+        transition: {
+            staggerChildren: 0.18,
+        },
+    },
+};
 
+const cardVariants = {
+    hidden: {
+        opacity: 0,
+        y: 30,
+    },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            duration: 0.5,
+            ease: "easeOut",
+        },
+    },
+};
 export default function Results({ result }) {
     return (
-        <div className="mt-12 space-y-10">
+    <motion.div
+        className="mt-12 space-y-10"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+    >
 
             {/* ==========================
                 REASONING PLAN
             ========================== */}
 
-            <SectionCard
-                icon="🧠"
+            <motion.div variants={cardVariants}>
+<SectionCard
+                icon={<Brain className="h-6 w-6 text-indigo-400" />}
                 title="Reasoning Plan"
             >
                 <div className="space-y-3">
 
                     {result.steps.map((step, index) => (
 
-                        <div
-                            key={index}
-                            className="flex items-start gap-4 rounded-lg border border-slate-800 bg-slate-950/40 p-4"
+                        <motion.div
+    key={index}
+    initial={{ opacity: 0, y: 15 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.08 }}
+                            className="
+flex items-start
+gap-5
+rounded-2xl
+border
+border-slate-800
+bg-gradient-to-br
+from-slate-900
+to-slate-950
+p-6
+transition-all
+duration-300
+hover:border-indigo-500/40
+hover:-translate-y-1
+hover:shadow-lg
+hover:shadow-indigo-500/5
+"
                         >
 
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold">
+                            <div className="
+flex
+h-10
+w-10
+items-center
+justify-center
+rounded-xl
+bg-indigo-500/15
+border
+border-indigo-500/30
+text-indigo-300
+font-semibold
+">
                                 {index + 1}
                             </div>
 
@@ -29,30 +95,48 @@ export default function Results({ result }) {
                                 {step}
                             </p>
 
-                        </div>
+                        </motion.div>
 
                     ))}
 
                 </div>
 
             </SectionCard>
+            </motion.div>
 
             {/* ==========================
                 ANALYSIS
             ========================== */}
 
-            <SectionCard
-                icon="🔍"
+            <motion.div variants={cardVariants}>
+
+<SectionCard
+                icon={<Search className="h-6 w-6 text-sky-400" />}
                 title="Analysis"
             >
                 <div className="space-y-6">
 
                     {result.analysis.analysis.map((item, index) => (
 
-                        <div
-                            key={index}
-                            className="rounded-xl border border-slate-800 bg-slate-950/40 p-5"
-                        >
+                        <motion.div
+    key={index}
+    initial={{ opacity: 0, y: 15 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.08 }}
+    className="
+        rounded-2xl
+        border
+        border-slate-800
+        bg-gradient-to-br
+        from-slate-900
+        to-slate-950
+        p-6
+        transition
+        duration-300
+        hover:border-sky-500/40
+        hover:-translate-y-1
+    "
+>
 
                             <div className="flex items-center gap-3 mb-3">
 
@@ -70,20 +154,23 @@ export default function Results({ result }) {
                                 {item.reasoning}
                             </p>
 
-                        </div>
+                        </motion.div>
 
                     ))}
 
                 </div>
 
             </SectionCard>
+            </motion.div>
 
             {/* ==========================
                 CRITIQUE
             ========================== */}
 
-            <SectionCard
-                icon="⚠️"
+            <motion.div variants={cardVariants}>
+
+<SectionCard
+                icon={<TriangleAlert className="h-6 w-6 text-amber-400" />}
                 title="Critique"
             >
 
@@ -116,13 +203,16 @@ export default function Results({ result }) {
                 </div>
 
             </SectionCard>
+            </motion.div>
 
             {/* ==========================
                 FINAL RECOMMENDATION
             ========================== */}
 
-            <SectionCard
-                icon="✅"
+            <motion.div variants={cardVariants}>
+
+<SectionCard
+                icon={<BadgeCheck className="h-6 w-6 text-emerald-400" />}
                 title="Final Recommendation"
             >
 
@@ -148,14 +238,24 @@ export default function Results({ result }) {
                             Confidence
                         </h3>
 
-                        <div className="w-full h-4 rounded-full bg-slate-800 overflow-hidden">
+                        <div className="relative w-full h-4 rounded-full bg-slate-800 overflow-hidden border border-slate-700">
 
-                            <div
-                                className="h-full bg-indigo-500 transition-all duration-700"
-                                style={{
-                                    width: `${result.final_answer.confidence}%`
-                                }}
-                            />
+                            <motion.div
+    initial={{ width: 0 }}
+    animate={{
+        width: `${result.final_answer.confidence}%`
+    }}
+    transition={{
+        duration: 1
+    }}
+    className="
+        h-full
+        rounded-full
+        bg-gradient-to-r
+        from-indigo-500
+        to-violet-500
+    "
+/>
 
                         </div>
 
@@ -170,8 +270,8 @@ export default function Results({ result }) {
                 </div>
 
             </SectionCard>
-
-        </div>
+        </motion.div>
+        </motion.div>
     );
 }
 
@@ -189,12 +289,25 @@ function Category({ title, color, items }) {
 
                 {items.map((item, index) => (
 
-                    <li
+                    <motion.li
+    initial={{ opacity: 0, x: -15 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay: index * 0.05 }}
                         key={index}
-                        className="rounded-lg border border-slate-800 bg-slate-950/40 p-3"
+                        className="
+rounded-xl
+border
+border-slate-800
+bg-slate-900/70
+p-4
+transition
+duration-300
+hover:border-indigo-500/40
+hover:bg-slate-900
+"
                     >
                         {item}
-                    </li>
+                    </motion.li>
 
                 ))}
 
@@ -210,13 +323,24 @@ function InfoBox({ title, color, children }) {
 
     return (
 
-        <div>
+        <motion.div
+    initial={{ opacity: 0, y: 15 }}
+    animate={{ opacity: 1, y: 0 }}
+>
 
             <h3 className={`text-lg font-semibold mb-3 ${color}`}>
                 {title}
             </h3>
 
-            <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-5">
+            <div className="
+rounded-2xl
+border
+border-slate-800
+bg-gradient-to-br
+from-slate-900
+to-slate-950
+p-6
+">
 
                 <p className="leading-7 text-slate-300">
                     {children}
@@ -224,7 +348,7 @@ function InfoBox({ title, color, children }) {
 
             </div>
 
-        </div>
+        </motion.div>
 
     );
 
