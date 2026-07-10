@@ -1,10 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SectionCard from "./SectionCard";
 import { analyzeProblem } from "../../api/reasoningApi";
-export default function Workspace() {
+import SkeletonCard from "./SkeletonCard";
+import Results from "./Results";
+import SkeletonResults from "./SkeletonResults";
+import EmptyState from "./EmptyState";
+export default function Workspace({
+    history,
+    setHistory,
+    selectedAnalysis
+}) {
     const [problem, setProblem] = useState("");
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
+    useEffect(() => {
+
+    if (!selectedAnalysis) return;
+
+    setProblem(selectedAnalysis.problem);
+
+    setResult(selectedAnalysis.result);
+
+}, [selectedAnalysis]);
     const handleAnalyze = async () => {
 
     if (!problem.trim()) return;
@@ -18,6 +35,21 @@ export default function Workspace() {
         console.log(data);
 
         setResult(data);
+        setHistory(prev => [
+
+    {
+        id: Date.now(),
+        problem,
+        result: data,
+        time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        })
+    },
+
+    ...prev
+
+]);
 
     } catch (error) {
 
@@ -77,294 +109,89 @@ export default function Workspace() {
 >
     Clear
 </button>
+</div>
+<div className="mt-10 rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+
+    <h3 className="text-lg font-semibold mb-6">
+        Multi-Agent Pipeline
+    </h3>
+
+    <div className="flex flex-wrap items-center justify-between gap-4">
+
+        {[
+            "Planner",
+            "Reasoner",
+            "Critic",
+            "Explainer"
+        ].map((agent, index) => (
+
+            <div
+                key={agent}
+                className="
+                    flex-1
+                    min-w-[150px]
+                    rounded-xl
+                    border
+                    border-slate-700
+                    bg-slate-950/40
+                    p-4
+                "
+            >
+
+                <div className="text-sm text-slate-400">
+                    Agent
+                </div>
+
+                <div className="mt-2 text-lg font-semibold">
+
+                    {agent}
+
+                </div>
+
+                <div className="mt-4">
+
+                    {loading ? (
+
+                        <span className="text-indigo-400 animate-pulse">
+
+                            Processing...
+
+                        </span>
+
+                    ) : result ? (
+
+                        <span className="text-green-400">
+
+                            ✔ Completed
+
+                        </span>
+
+                    ) : (
+
+                        <span className="text-slate-500">
+
+                            Waiting
+
+                        </span>
+
+                    )}
+
+                </div>
+
+            </div>
+
+        ))}
+
+    </div>
 
 </div>
+{loading && <SkeletonResults />}
 
-<div className="mt-12 space-y-10">
+{!loading && !result && <EmptyState />}
 
-    <SectionCard
-    icon="🧠"
-    title="Reasoning Plan"
->
-    {result ? (
-        <div className="space-y-3">
-
-            {result.steps.map((step, index) => (
-
-                <div
-                    key={index}
-                    className="flex items-start gap-4 rounded-lg border border-slate-800 bg-slate-950/40 p-4"
-                >
-
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold">
-                        {index + 1}
-                    </div>
-
-                    <p className="text-slate-300">
-                        {step}
-                    </p>
-
-                </div>
-
-            ))}
-
-        </div>
-    ) : (
-
-        <p className="text-slate-500">
-            Your reasoning plan will appear here after analysis.
-        </p>
-
-    )}
-</SectionCard>
-
-    <SectionCard
-    icon="🔍"
-    title="Analysis"
->
-    {result ? (
-
-        <div className="space-y-6">
-
-            {result.analysis.analysis.map((item, index) => (
-
-                <div
-                    key={index}
-                    className="rounded-xl border border-slate-800 bg-slate-950/40 p-5"
-                >
-
-                    <div className="flex items-center gap-3 mb-3">
-
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-bold">
-                            {index + 1}
-                        </div>
-
-                        <h3 className="font-semibold text-lg text-white">
-                            {item.step}
-                        </h3>
-
-                    </div>
-
-                    <p className="leading-7 text-slate-400">
-                        {item.reasoning}
-                    </p>
-
-                </div>
-
-            ))}
-
-        </div>
-
-    ) : (
-
-        <p className="text-slate-500">
-            Detailed reasoning will appear here after analysis.
-        </p>
-
-    )}
-</SectionCard>
-
-    <SectionCard
-    icon="⚠️"
-    title="Critique"
->
-    {result ? (
-
-        <div className="space-y-8">
-
-            {/* Assumptions */}
-
-            <div>
-
-                <h3 className="text-lg font-semibold mb-3 text-amber-400">
-                    Assumptions
-                </h3>
-
-                <ul className="space-y-2">
-
-                    {result.critic.critic.assumptions.map((item, index) => (
-
-                        <li
-                            key={index}
-                            className="rounded-lg border border-slate-800 bg-slate-950/40 p-3"
-                        >
-                            {item}
-                        </li>
-
-                    ))}
-
-                </ul>
-
-            </div>
-
-            {/* Missing Information */}
-
-            <div>
-
-                <h3 className="text-lg font-semibold mb-3 text-cyan-400">
-                    Missing Information
-                </h3>
-
-                <ul className="space-y-2">
-
-                    {result.critic.critic.missing_information.map((item, index) => (
-
-                        <li
-                            key={index}
-                            className="rounded-lg border border-slate-800 bg-slate-950/40 p-3"
-                        >
-                            {item}
-                        </li>
-
-                    ))}
-
-                </ul>
-
-            </div>
-
-            {/* Risks */}
-
-            <div>
-
-                <h3 className="text-lg font-semibold mb-3 text-red-400">
-                    Risks
-                </h3>
-
-                <ul className="space-y-2">
-
-                    {result.critic.critic.risks.map((item, index) => (
-
-                        <li
-                            key={index}
-                            className="rounded-lg border border-slate-800 bg-slate-950/40 p-3"
-                        >
-                            {item}
-                        </li>
-
-                    ))}
-
-                </ul>
-
-            </div>
-
-            {/* Follow-up Questions */}
-
-            <div>
-
-                <h3 className="text-lg font-semibold mb-3 text-green-400">
-                    Follow-up Questions
-                </h3>
-
-                <ul className="space-y-2">
-
-                    {result.critic.critic.follow_up_questions.map((item, index) => (
-
-                        <li
-                            key={index}
-                            className="rounded-lg border border-slate-800 bg-slate-950/40 p-3"
-                        >
-                            {item}
-                        </li>
-
-                    ))}
-
-                </ul>
-
-            </div>
-
-        </div>
-
-    ) : (
-
-        <p className="text-slate-500">
-            Critique will appear here after analysis.
-        </p>
-
-    )}
-</SectionCard>
-
-    <SectionCard
-    icon="✅"
-    title="Final Recommendation"
->
-    {result ? (
-
-        <div className="space-y-8">
-
-            {/* Summary */}
-
-            <div>
-
-                <h3 className="text-lg font-semibold text-indigo-400 mb-3">
-                    Summary
-                </h3>
-
-                <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-5">
-
-                    <p className="leading-7 text-slate-300">
-                        {result.final_answer.summary}
-                    </p>
-
-                </div>
-
-            </div>
-
-            {/* Recommendation */}
-
-            <div>
-
-                <h3 className="text-lg font-semibold text-emerald-400 mb-3">
-                    Recommendation
-                </h3>
-
-                <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-5">
-
-                    <p className="leading-7 text-slate-300">
-                        {result.final_answer.recommendation}
-                    </p>
-
-                </div>
-
-            </div>
-
-            {/* Confidence */}
-
-            <div>
-
-                <h3 className="text-lg font-semibold mb-3">
-                    Confidence
-                </h3>
-
-                <div className="w-full h-4 rounded-full bg-slate-800 overflow-hidden">
-
-                    <div
-                        className="h-full bg-indigo-500 transition-all duration-700"
-                        style={{
-                            width: `${result.final_answer.confidence}%`
-                        }}
-                    />
-
-                </div>
-
-                <p className="mt-3 text-right text-indigo-400 font-semibold">
-
-                    {result.final_answer.confidence}%
-
-                </p>
-
-            </div>
-
-        </div>
-
-    ) : (
-
-        <p className="text-slate-500">
-            Final recommendation will appear here.
-        </p>
-
-    )}
-</SectionCard>
-</div>
+{!loading && result && (
+    <Results result={result} />
+)}
 </div>
 </div>
 </main>
