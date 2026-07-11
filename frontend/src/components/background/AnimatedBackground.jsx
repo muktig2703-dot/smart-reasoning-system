@@ -11,11 +11,30 @@ function AnimatedBackground() {
             <div className="absolute inset-0 bg-[#0B0F14]" />
 
             <div
-                className="
-                absolute inset-0
-                bg-[radial-gradient(circle_at_top,rgba(99,102,241,.12),transparent_55%)]
-                "
-            />
+    className="
+        absolute
+        inset-0
+        bg-[radial-gradient(circle_at_top,rgba(99,102,241,.16),transparent_55%)]
+    "
+/>
+
+<div
+    className="
+        absolute
+        inset-0
+        bg-[radial-gradient(circle_at_bottom_right,rgba(139,92,246,.10),transparent_45%)]
+    "
+/>
+
+<div
+    className="
+        absolute
+        inset-0
+        bg-[radial-gradient(circle_at_left_center,rgba(6,182,212,.08),transparent_45%)]
+    "
+/>
+
+<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#05070C]/70" />
 
             <FloatingGrid />
 

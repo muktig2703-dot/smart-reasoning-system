@@ -1,7 +1,15 @@
-function Section({ children, className = "" }) {
+function Section({
+    children,
+    className = ""
+}) {
     return (
         <section
-            className={`py-24 ${className}`}
+            className={`
+                relative
+                py-24
+                lg:py-32
+                ${className}
+            `}
         >
             {children}
         </section>

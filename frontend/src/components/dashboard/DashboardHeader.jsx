@@ -1,6 +1,5 @@
 import {
     Brain,
-    Moon,
     Settings,
     Bell,
     ChevronDown
@@ -89,31 +88,6 @@ export default function DashboardHeader() {
     </span>
 
 </div>
-
-{/* Theme */}
-
-<button
-    className="
-        flex
-        h-11
-        w-11
-        items-center
-        justify-center
-        rounded-xl
-        border
-        border-slate-700
-        bg-slate-900
-        transition-all
-        duration-300
-        hover:border-indigo-500
-        hover:bg-slate-800
-        hover:-translate-y-1
-    "
->
-
-    <Moon className="h-5 w-5 text-slate-300" />
-
-</button>
 
 {/* Notifications */}
 

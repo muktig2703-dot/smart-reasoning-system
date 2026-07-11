@@ -4,6 +4,12 @@ import ReasoningVisualization
 from "../background/ReasoningVisualization";
 import Badge from "../ui/Badge";
 import Button from "../ui/Button";
+import {
+    ArrowRight,
+    Brain,
+    ShieldCheck,
+    Cpu
+} from "lucide-react";
 
 function Hero() {
     return (
@@ -12,69 +18,173 @@ function Hero() {
             {/* LEFT */}
 
             <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-            >
+    initial={{
+        opacity: 0,
+        y: 40
+    }}
+    animate={{
+        opacity: 1,
+        y: 0
+    }}
+    transition={{
+        duration: 0.8,
+        ease: "easeOut"
+    }}
+>
 
                 <Badge>
                     AI Powered • Multi-Agent • Explainable
                 </Badge>
 
-                <h1 className="mt-8 text-6xl lg:text-7xl font-black leading-tight">
+                <h1 className="mt-8 text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight">
 
-                    Think Better
+    Think Better
 
-                    <br />
+    <br />
 
-                    with AI Reasoning
+    <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">
 
-                </h1>
+        with AI Reasoning
 
-                <p className="mt-8 text-xl text-gray-400 leading-9">
+    </span>
 
-                    Analyze complex problems through planning,
-                    reasoning, self-critique, and explainable AI.
+</h1>
 
-                    Built for students, engineers,
-                    researchers and decision makers.
+                <p className="mt-8 max-w-2xl text-xl leading-9 text-slate-400">
 
-                </p>
+    Transform complex questions into structured reasoning with an
+    intelligent multi-agent system that plans, analyzes, critiques,
+    and explains every decision.
 
-                <div className="mt-10 flex gap-5">
+</p>
 
-                    <Link to="/dashboard">
+                <div className="mt-10 flex flex-wrap gap-5">
 
-                        <Button>
+    <Link to="/dashboard">
 
-                            Get Started
+        <Button>
 
-                        </Button>
+            <span className="flex items-center gap-2">
 
-                    </Link>
+                Get Started
 
-                    <Link to="/login">
+                <ArrowRight className="h-5 w-5" />
 
-                        <Button variant="secondary">
+            </span>
 
-                            Login
+        </Button>
 
-                        </Button>
+    </Link>
 
-                    </Link>
+    <Link to="/login">
 
-                </div>
+        <Button variant="secondary">
+
+            Login
+
+        </Button>
+
+    </Link>
+
+</div>
+<div className="mt-12 flex flex-wrap gap-4">
+
+    {[
+        {
+            icon: Brain,
+            text: "Multi-Agent AI"
+        },
+        {
+            icon: ShieldCheck,
+            text: "Self Critique"
+        },
+        {
+            icon: Cpu,
+            text: "Explainable Reasoning"
+        }
+    ].map((item) => (
+
+        <motion.div
+            key={item.text}
+            className="
+                flex
+                items-center
+                gap-3
+                rounded-2xl
+                border
+                border-slate-800
+                bg-slate-900/60
+                px-5
+                py-3
+                backdrop-blur-sm
+            "
+        >
+
+            <item.icon className="h-5 w-5 text-indigo-400" />
+
+            <span className="text-sm text-slate-300">
+
+                {item.text}
+
+            </span>
+
+        </motion.div>
+
+    ))}
+
+</div>
+<div className="mt-14 flex flex-wrap gap-10">
+
+    {[
+        {
+            value: "4",
+            label: "AI Agents"
+        },
+        {
+            value: "100%",
+            label: "Explainable"
+        },
+        {
+            value: "24/7",
+            label: "AI Available"
+        }
+    ].map((item) => (
+
+        <motion.div key={item.label}>
+
+            <h3 className="text-3xl font-bold text-white">
+                {item.value}
+            </h3>
+
+            <p className="mt-1 text-sm text-slate-500">
+                {item.label}
+            </p>
+
+        </motion.div>
+
+    ))}
+
+</div>
 
             </motion.div>
 
             {/* RIGHT */}
 
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: .4 }}
-                className="relative h-[550px]"
-            >
+    initial={{
+        opacity: 0,
+        scale: 0.95
+    }}
+    animate={{
+        opacity: 1,
+        scale: 1
+    }}
+    transition={{
+        duration: 0.8,
+        delay: 0.25
+    }}
+    className="relative h-[550px]"
+>
 
                 <ReasoningVisualization />
 
