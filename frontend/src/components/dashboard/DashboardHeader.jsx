@@ -4,8 +4,14 @@ import {
     Bell,
     ChevronDown
 } from "lucide-react";
-export default function DashboardHeader() {
 
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+export default function DashboardHeader() {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
     return (
 
         <header
@@ -80,7 +86,6 @@ export default function DashboardHeader() {
         py-2
     "
 >
-
     <div className="h-2 w-2 rounded-full bg-emerald-400" />
 
     <span className="text-sm text-emerald-300">
@@ -138,11 +143,11 @@ export default function DashboardHeader() {
     <Settings className="h-5 w-5 text-slate-300" />
 
 </button>
-
 {/* User */}
-
 <div
+    onClick={() => setMenuOpen(!menuOpen)}
     className="
+        relative
         flex
         items-center
         gap-3
@@ -152,6 +157,7 @@ export default function DashboardHeader() {
         bg-slate-900
         px-3
         py-2
+        cursor-pointer
     "
 >
 
@@ -167,28 +173,59 @@ export default function DashboardHeader() {
             font-semibold
         "
     >
-
-        M
-
+        {user?.name?.charAt(0).toUpperCase() || "U"}
     </div>
 
     <div className="hidden lg:block">
-
         <p className="text-sm font-semibold">
-            Mukti
+            {user?.name || "User"}
         </p>
 
         <p className="text-xs text-slate-500">
             AI Developer
         </p>
-
     </div>
 
     <ChevronDown className="h-4 w-4 text-slate-500" />
 
-</div>
-</div>
+    {menuOpen && (
+        <div
+            className="
+                absolute
+                right-0
+                top-16
+                w-44
+                rounded-xl
+                border
+                border-slate-700
+                bg-slate-900
+                shadow-xl
+                overflow-hidden
+            "
+        >
+            <button
+                onClick={(e) => {
+    e.stopPropagation();
+    logout();
+    navigate("/");
+}}
+                className="
+                    w-full
+                    px-4
+                    py-3
+                    text-left
+                    text-sm
+                    hover:bg-slate-800
+                    transition
+                "
+            >
+                Logout
+            </button>
+        </div>
+    )}
 
+</div>
+</div>
         </header>
 
     );

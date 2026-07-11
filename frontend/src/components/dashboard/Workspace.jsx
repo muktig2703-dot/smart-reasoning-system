@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { analyzeProblem } from "../../api/reasoningApi";
+import { saveHistory } from "../../api/historyApi";
 import Results from "./Results";
 import SkeletonResults from "./SkeletonResults";
 import EmptyState from "./EmptyState";
@@ -38,20 +39,33 @@ export default function Workspace({
 
         const data = await analyzeProblem(problem);
 
-        console.log(data);
 
-        setResult(data);
-        setHistory(prev => [
+setResult(data);
 
-    {
-        id: Date.now(),
-        problem,
-        result: data,
-        time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-        })
-    },
+
+// save permanently to database
+
+const response = await saveHistory({
+
+    problem,
+
+    result: JSON.stringify(data)
+
+});
+
+
+const savedHistory = {
+
+    ...response.data,
+
+    result: JSON.parse(response.data.result)
+
+};
+
+
+setHistory(prev => [
+
+    savedHistory,
 
     ...prev
 

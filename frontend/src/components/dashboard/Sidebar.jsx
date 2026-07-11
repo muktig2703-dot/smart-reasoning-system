@@ -2,11 +2,15 @@ import { motion } from "framer-motion";
 import {
     History,
     Search,
-    Clock3
+    Clock3,
+    Trash2
 } from "lucide-react";
 export default function Sidebar({
     history,
-    onSelect
+    onSelect,
+    onDelete,
+    searchQuery,
+    setSearchQuery
 }) {
 
     return (
@@ -93,16 +97,18 @@ focus-within:ring-indigo-500/20
         <Search className="h-4 w-4 text-slate-500" />
 
         <input
-            type="text"
-            placeholder="Search history..."
-            className="
-                flex-1
-                bg-transparent
-                outline-none
-                text-sm
-                placeholder:text-slate-500
-            "
-        />
+    type="text"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    placeholder="Search history..."
+    className="
+        flex-1
+        bg-transparent
+        outline-none
+        text-sm
+        placeholder:text-slate-500
+    "
+/>
 
     </div>
 
@@ -201,11 +207,41 @@ whileTap={{
     {item.problem}
 </p>
 
-<div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
+<div className="mt-4 flex items-center justify-between">
 
-    <Clock3 className="h-3.5 w-3.5" />
+    <div className="flex items-center gap-2 text-xs text-slate-500">
 
-    <span>{item.time}</span>
+        <Clock3 className="h-3.5 w-3.5" />
+
+        <span>
+            {item.created_at
+                ? new Date(item.created_at).toLocaleString()
+                : item.time}
+        </span>
+
+    </div>
+
+    <button
+        onClick={(e) => {
+
+            e.stopPropagation();
+
+            onDelete(item.id);
+
+        }}
+        className="
+            rounded-lg
+            p-2
+            text-slate-500
+            transition
+            hover:bg-red-500/10
+            hover:text-red-400
+        "
+    >
+
+        <Trash2 className="h-4 w-4" />
+
+    </button>
 
 </div>
                         </motion.div>

@@ -1,7 +1,47 @@
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 function Login() {
+    const navigate = useNavigate();
+
+const { login } = useAuth();
+
+const [email, setEmail] = useState("");
+
+const [password, setPassword] = useState("");
+
+const [error, setError] = useState("");
+
+const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    setError("");
+
+    try {
+
+        await login({
+    email,
+    password,
+});
+
+        navigate("/dashboard");
+
+    }
+
+    catch (err) {
+
+        setError(
+    typeof err.response?.data?.detail === "string"
+        ? err.response.data.detail
+        : "Invalid login details."
+);
+
+    }
+
+};
     return (
         <div className="min-h-screen bg-[#0B0F14] text-white flex">
 
@@ -44,17 +84,22 @@ function Login() {
                         Login to continue your reasoning journey.
                     </p>
 
-                    <form className="space-y-5">
+                    <form
+    onSubmit={handleSubmit}
+    className="space-y-5"
+>
 
                         <div className="relative">
 
                             <Mail className="absolute left-4 top-4 text-gray-500" size={18} />
 
                             <input
-                                type="email"
-                                placeholder="Email"
-                                className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 focus:border-indigo-500 outline-none"
-                            />
+    type="email"
+    placeholder="Email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 focus:border-indigo-500 outline-none"
+/>
 
                         </div>
 
@@ -63,13 +108,25 @@ function Login() {
                             <Lock className="absolute left-4 top-4 text-gray-500" size={18} />
 
                             <input
-                                type="password"
-                                placeholder="Password"
-                                className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 focus:border-indigo-500 outline-none"
-                            />
+    type="password"
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 focus:border-indigo-500 outline-none"
+/>
 
                         </div>
+{
+    error && (
 
+        <p className="text-sm text-red-400">
+
+            {error}
+
+        </p>
+
+    )
+}
                         <button
                             className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 transition py-3 font-semibold flex items-center justify-center gap-2"
                         >

@@ -1,7 +1,66 @@
 import { User, Mail, Lock, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 function Register() {
+    const navigate = useNavigate();
+
+const { register } = useAuth();
+
+const [name, setName] = useState("");
+
+const [email, setEmail] = useState("");
+
+const [password, setPassword] = useState("");
+
+const [confirmPassword, setConfirmPassword] = useState("");
+
+const [error, setError] = useState("");
+
+const handleSubmit = async (e) => {
+
+    e.preventDefault();
+
+    setError("");
+
+    if (password !== confirmPassword) {
+
+        setError("Passwords do not match.");
+
+        return;
+
+    }
+
+    try {
+
+        await register({
+
+            name,
+
+            email,
+
+            password,
+
+        });
+
+        navigate("/login");
+
+    }
+
+    catch (err) {
+
+        setError(
+
+            err.response?.data?.detail ||
+
+            "Registration failed."
+
+        );
+
+    }
+
+};
     return (
         <div className="min-h-screen bg-[#0B0F14] text-white flex">
 
@@ -44,44 +103,65 @@ function Register() {
                         Join the AI Reasoning System.
                     </p>
 
-                    <form className="space-y-5">
+                    <form
+    onSubmit={handleSubmit}
+    className="space-y-5"
+>
 
                         <div className="relative">
                             <User className="absolute left-4 top-4 text-gray-500" size={18} />
                             <input
-                                type="text"
-                                placeholder="Full Name"
-                                className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 outline-none focus:border-indigo-500"
-                            />
+    type="text"
+    placeholder="Full Name"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+    className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 outline-none focus:border-indigo-500"
+/>
                         </div>
 
                         <div className="relative">
                             <Mail className="absolute left-4 top-4 text-gray-500" size={18} />
                             <input
-                                type="email"
-                                placeholder="Email"
-                                className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 outline-none focus:border-indigo-500"
-                            />
+    type="email"
+    placeholder="Email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 outline-none focus:border-indigo-500"
+/>
                         </div>
 
                         <div className="relative">
                             <Lock className="absolute left-4 top-4 text-gray-500" size={18} />
                             <input
-                                type="password"
-                                placeholder="Password"
-                                className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 outline-none focus:border-indigo-500"
-                            />
+    type="password"
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 outline-none focus:border-indigo-500"
+/>
                         </div>
 
                         <div className="relative">
                             <Lock className="absolute left-4 top-4 text-gray-500" size={18} />
                             <input
-                                type="password"
-                                placeholder="Confirm Password"
-                                className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 outline-none focus:border-indigo-500"
-                            />
+    type="password"
+    placeholder="Confirm Password"
+    value={confirmPassword}
+    onChange={(e) => setConfirmPassword(e.target.value)}
+    className="w-full rounded-xl bg-[#1A2330] border border-white/10 py-3 pl-12 pr-4 outline-none focus:border-indigo-500"
+/>
                         </div>
+{
+    error && (
 
+        <p className="text-sm text-red-400">
+
+            {error}
+
+        </p>
+
+    )
+}
                         <button className="w-full rounded-xl bg-indigo-600 hover:bg-indigo-500 transition py-3 font-semibold flex items-center justify-center gap-2">
                             Register
                             <ArrowRight size={18} />
