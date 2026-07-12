@@ -8,10 +8,14 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import ProfileModal from "./ProfileModal";
+import SettingsModal from "./SettingsModal";
 export default function DashboardHeader() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [profileOpen, setProfileOpen] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
     return (
 
         <header
@@ -122,6 +126,7 @@ export default function DashboardHeader() {
 {/* Settings */}
 
 <button
+onClick={() => setSettingsOpen(true)}
     className="
         flex
         h-11
@@ -204,10 +209,29 @@ export default function DashboardHeader() {
             "
         >
             <button
+    onClick={(e) => {
+        e.stopPropagation();
+        setProfileOpen(true);
+        setMenuOpen(false);
+    }}
+    className="
+        w-full
+        px-4
+        py-3
+        text-left
+        text-sm
+        hover:bg-slate-800
+        transition
+    "
+>
+    Profile
+</button>
+            <button
                 onClick={(e) => {
     e.stopPropagation();
-    logout();
-    navigate("/");
+    setMenuOpen(false);
+logout();
+navigate("/");
 }}
                 className="
                     w-full
@@ -226,6 +250,15 @@ export default function DashboardHeader() {
 
 </div>
 </div>
+<ProfileModal
+    open={profileOpen}
+    onClose={() => setProfileOpen(false)}
+    user={user}
+/>
+<SettingsModal
+    open={settingsOpen}
+    onClose={() => setSettingsOpen(false)}
+/>
         </header>
 
     );

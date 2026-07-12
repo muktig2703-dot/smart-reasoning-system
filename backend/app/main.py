@@ -5,6 +5,7 @@ from app.models import User, History
 from app.routes.reasoning import router
 from app.routes.auth import router as auth_router
 from app.routes.history import router as history_router
+from app.routes.profile import router as profile_router
 Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Smart Reasoning System",
@@ -13,6 +14,7 @@ app = FastAPI(
 app.include_router(auth_router)
 app.include_router(router)
 app.include_router(history_router)
+app.include_router(profile_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],

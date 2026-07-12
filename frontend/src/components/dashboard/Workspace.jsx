@@ -12,6 +12,7 @@ import {
     BadgeCheck,
     ArrowRight
 } from "lucide-react";
+import { useSettings } from "../../context/SettingsContext";
 export default function Workspace({
     history,
     setHistory,
@@ -20,6 +21,7 @@ export default function Workspace({
     const [problem, setProblem] = useState("");
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
+    const { settings } = useSettings();
     useEffect(() => {
 
     if (!selectedAnalysis) return;
@@ -37,7 +39,10 @@ export default function Workspace({
 
     try {
 
-        const data = await analyzeProblem(problem);
+        const data = await analyzeProblem({
+    problem,
+    settings,
+});
 
 
 setResult(data);

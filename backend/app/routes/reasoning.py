@@ -37,7 +37,10 @@ from fastapi import HTTPException
 @router.post("/analyze")
 def analyze(request: ReasoningRequest):
     try:
-        return run_reasoning_pipeline(request.problem)
+        return run_reasoning_pipeline(
+            request.problem,
+            request.settings
+        )
 
     except Exception as e:
         raise HTTPException(
