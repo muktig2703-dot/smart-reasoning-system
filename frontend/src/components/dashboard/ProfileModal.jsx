@@ -4,6 +4,7 @@ import {
     updateProfile
 } from "../../api/profileApi";
 import { useAuth } from "../../context/AuthContext";
+import { useNotifications } from "../../context/NotificationContext";
 export default function ProfileModal({
     open,
     onClose
@@ -13,6 +14,7 @@ export default function ProfileModal({
 
     const [email, setEmail] = useState("");
     const { setUser } = useAuth();
+    const { addNotification } = useNotifications();
 
     useEffect(() => {
 
@@ -38,6 +40,10 @@ export default function ProfileModal({
         });
 
         setUser(res.data);
+        addNotification({
+    type: "success",
+    title: "Profile updated",
+});
 
         alert("Profile updated successfully!");
 

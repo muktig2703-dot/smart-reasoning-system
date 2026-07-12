@@ -10,12 +10,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import ProfileModal from "./ProfileModal";
 import SettingsModal from "./SettingsModal";
+import NotificationPanel from "./NotificationPanel";
 export default function DashboardHeader() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const [profileOpen, setProfileOpen] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [notificationsOpen, setNotificationsOpen] = useState(false);
     return (
 
         <header
@@ -101,6 +103,7 @@ export default function DashboardHeader() {
 {/* Notifications */}
 
 <button
+onClick={() => setNotificationsOpen(true)}
     className="
         flex
         h-11
@@ -255,9 +258,15 @@ navigate("/");
     onClose={() => setProfileOpen(false)}
     user={user}
 />
+
 <SettingsModal
     open={settingsOpen}
     onClose={() => setSettingsOpen(false)}
+/>
+
+<NotificationPanel
+    open={notificationsOpen}
+    onClose={() => setNotificationsOpen(false)}
 />
         </header>
 

@@ -13,6 +13,7 @@ import {
     ArrowRight
 } from "lucide-react";
 import { useSettings } from "../../context/SettingsContext";
+import { useNotifications } from "../../context/NotificationContext";
 export default function Workspace({
     history,
     setHistory,
@@ -22,6 +23,7 @@ export default function Workspace({
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(null);
     const { settings } = useSettings();
+    const { addNotification } = useNotifications();
     useEffect(() => {
 
     if (!selectedAnalysis) return;
@@ -44,37 +46,34 @@ export default function Workspace({
     settings,
 });
 
-
 setResult(data);
+
+addNotification({
+    type: "success",
+    title: "Analysis completed",
+});
 
 
 // save permanently to database
 
-const response = await saveHistory({
+if (settings.autoSaveHistory) {
+    
 
-    problem,
+    const response = await saveHistory({
+        problem,
+        result: JSON.stringify(data)
+    });
 
-    result: JSON.stringify(data)
+    const savedHistory = {
+        ...response.data,
+        result: JSON.parse(response.data.result)
+    };
 
-});
-
-
-const savedHistory = {
-
-    ...response.data,
-
-    result: JSON.parse(response.data.result)
-
-};
-
-
-setHistory(prev => [
-
-    savedHistory,
-
-    ...prev
-
-]);
+    setHistory(prev => [
+        savedHistory,
+        ...prev
+    ]);
+}
 
     } catch (error) {
 
