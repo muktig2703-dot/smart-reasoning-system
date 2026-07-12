@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {
     Brain,
     GitBranch,
@@ -58,23 +57,23 @@ function Footer() {
 
                     <div className="flex flex-col gap-3 text-slate-400">
 
-                        <Link to="/">
-                            Home
-                        </Link>
+    <a href="#home">
+        Home
+    </a>
 
-                        <Link to="/login">
-                            Login
-                        </Link>
+    <a href="#features">
+        Features
+    </a>
 
-                        <Link to="/register">
-                            Register
-                        </Link>
+    <a href="#how-it-works">
+        About
+    </a>
 
-                        <Link to="/dashboard">
-                            Dashboard
-                        </Link>
+    <a href="#contact">
+        Contact
+    </a>
 
-                    </div>
+</div>
 
                 </div>
 
@@ -88,21 +87,23 @@ function Footer() {
 
                     <div className="space-y-4">
 
-                        <div className="flex items-center gap-3 text-slate-400">
+                        <a
+    href="https://github.com/muktig2703-dot"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center gap-3 text-slate-400"
+>
+    <GitBranch className="h-5 w-5" />
+    <span>GitHub</span>
+</a>
 
-                            <GitBranch className="h-5 w-5" />
-
-                            <span>GitHub</span>
-
-                        </div>
-
-                        <div className="flex items-center gap-3 text-slate-400">
-
-                            <Mail className="h-5 w-5" />
-
-                            <span>Email</span>
-
-                        </div>
+<a
+    href="mailto:muktig2703@gmail.com"
+    className="flex items-center gap-3 text-slate-400"
+>
+    <Mail className="h-5 w-5" />
+    <span>Email</span>
+</a>
 
                     </div>
 

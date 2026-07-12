@@ -20,9 +20,11 @@ function Landing() {
             <main className="pt-28">
                  <Container>
 
+    <div id="home">
         <Hero />
+    </div>
 
-    </Container>
+</Container>
 
                 <Section className="pt-8">
 
@@ -177,6 +179,7 @@ function Landing() {
                 >
 
                     <div
+                    id="contact"
                         className="
                             mx-auto
                             flex
