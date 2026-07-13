@@ -12,17 +12,34 @@ The application is built with a modern React frontend, a FastAPI backend, and in
 
 # Preview
 
-```
-Landing Page
 
-Dashboard
+## Landing Page
+![](screnshots/Landing-Page.png)
 
-Reasoning Workspace
+## Register Page
+![](screenshots/Register-Page.png)
 
-Analysis Results
+## Login Page
+![](screenshot/Login-Page.png)
 
-History Panel
-```
+## Dashboard Page
+![](screenshots/Dashboard-Page.png)
+
+## AI Analysis
+### Analyis
+![](screenshots/Analysis.png)
+### Resoning
+![](screenshots/Reasoning.png)
+### Critique
+![](screenshots/Critique.png)
+### Final Recommendation
+![](screenshots/Final-Recommendation.png)
+### Confidence Meter
+![](screenshots/Confidence-Meter.png)
+
+## History Panel
+![](screenshots/History-Sidebar.png)
+
 
 ---
 
