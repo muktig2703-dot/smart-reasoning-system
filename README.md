@@ -14,13 +14,13 @@ The application is built with a modern React frontend, a FastAPI backend, and in
 
 
 ## Landing Page
-![](screnshots/Landing-Page.png)
+![](screenshots/Landing-Page.png)
 
 ## Register Page
 ![](screenshots/Register-Page.png)
 
 ## Login Page
-![](screenshot/Login-Page.png)
+![](screenshots/Login-Page.png)
 
 ## Dashboard Page
 ![](screenshots/Dashboard-Page.png)
